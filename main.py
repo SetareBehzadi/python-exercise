@@ -2,6 +2,10 @@ import random
 
 from config import GAME_CHOICES, RULES, scoreboard
 
+from datetime import datetime, timedelta
+
+from decorators import log_time
+
 
 def get_user_choice():
     user_input = input('please enter your choice (r, p, s): ')
@@ -35,7 +39,8 @@ def update_scoreboard(result):
     print("#", f"user : {scoreboard['user']}", "#")
     print("#", f"system : {scoreboard['system']}", "#")
 
-def play():
+
+def play_one_hand():
     result = {'user': 0, 'system': 0}
     while result['user'] < 3 and result['system'] < 3:
         user_choice = get_user_choice()
@@ -53,7 +58,12 @@ def play():
     update_scoreboard(result)
     play_again = input("Do you want play again? (y/n)")
     if play_again == "y":
-        play()
+        play_one_hand()
+
+
+@log_time
+def play():
+    play_one_hand()
 
 
 if __name__ == '__main__':
